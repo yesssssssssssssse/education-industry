@@ -23,7 +23,7 @@ button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
 .wrap{width:min(1180px,100% - 32px);margin-inline:auto}
 h1,h2,h3,.price,.num b,.fact b,.plate b,.tag2,.step::before{font-family:'KC','Museo','Montserrat',sans-serif;font-weight:700}
 /* Ұ/ұ are missing in Kenyan Coffee: use Museo */
-.u{font-family:'Museo',sans-serif;font-weight:700;font-size:1.04em}
+.mu,.mu *{font-family:'Museo','Montserrat',sans-serif!important;font-weight:900!important;letter-spacing:.01em!important}
 h1,h2,h3{text-transform:uppercase;letter-spacing:.04em;line-height:1.08}
 section{padding-top:56px}
 /* top */
@@ -360,11 +360,12 @@ m_wa:'Сәлеметсіз бе! Шетелде оқу бойынша тегін
 let lang='ru';
 try{const s=localStorage.getItem('ei-lang'); if(s==='kk'||s==='ru') lang=s; else if((navigator.language||'').toLowerCase().startsWith('kk')) lang='kk';}catch(e){}
 function wa(k){return 'https://wa.me/'+PHONE+'?text='+encodeURIComponent(T[lang]['m_'+(k||'wa')]);}
-function uw(el){ if(/[ұҰ]/.test(el.textContent)&&!el.children.length&&getComputedStyle(el).fontFamily.indexOf('KC')===0){el.innerHTML=el.textContent.replace(/[ұҰ]/g,'<span class="u">$&</span>');} }
+const KCSEL='h1,h2,h3,.price,.tag2,.plate b,.num b,.fact b';
+function mark(){document.querySelectorAll('.mu').forEach(x=>x.classList.remove('mu'));document.querySelectorAll(KCSEL).forEach(x=>{if(/[ұҰ]/.test(x.textContent))x.classList.add('mu');});}
 function apply(){
   const d=T[lang]; document.documentElement.lang=lang;
-  document.querySelectorAll('[data-t]').forEach(e=>{const v=d[e.dataset.t]; if(v!==undefined) e.textContent=v; uw(e);});
-  document.querySelectorAll('.plate b').forEach(uw);
+  document.querySelectorAll('[data-t]').forEach(e=>{const v=d[e.dataset.t]; if(v!==undefined) e.textContent=v;});
+  mark();
   document.querySelectorAll('[data-wa]').forEach(a=>{a.href=wa(a.dataset.msg); a.target='_blank'; a.rel='noopener';});
   document.querySelectorAll('.lang button').forEach(b=>b.classList.toggle('on',b.dataset.l===lang));
 }
